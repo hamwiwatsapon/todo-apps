@@ -14,7 +14,7 @@ func NewTodoUsecase(repo domain.TodoRepository) domain.TodoUsecase {
 	}
 }
 
-func (u *todoUsecase) Create(todo *domain.Todo) error {
+func (u *todoUsecase) Create(todo *domain.CreateTodoDTO) (*domain.Todo, error) {
 	return u.todoRepo.Create(todo)
 }
 
