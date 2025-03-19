@@ -1,0 +1,375 @@
+{
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "API user management Server by Fiber | Doc by Swagger.",
+        "title": "User API by Fiber and Swagger",
+        "contact": {
+            "name": "wiwatsapon",
+            "email": "hamlert33@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "paths": {
+        "/healthcheck": {
+            "get": {
+                "description": "Get the status of server.",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "root"
+                ],
+                "summary": "Show the status of server.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.HealthCheckResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/todos": {
+            "get": {
+                "description": "Retrieve all todos from the system",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todo"
+                ],
+                "summary": "Get all todos",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Todo"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse500"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Use for create to do.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todo"
+                ],
+                "summary": "Create to do.",
+                "parameters": [
+                    {
+                        "description": "Todo object",
+                        "name": "todo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.CreateTodoDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Todo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse400"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse500"
+                        }
+                    }
+                }
+            }
+        },
+        "/todos/{id}": {
+            "get": {
+                "description": "Retrieve todo by id from the system",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todo"
+                ],
+                "summary": "Get todo by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Todo ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Todo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse400"
+                        }
+                    },
+                    "404": {
+                        "description": "Todo not found",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse500"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update todo to the system",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todo"
+                ],
+                "summary": "Update todo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Todo ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Todo"
+                        }
+                    },
+                    "404": {
+                        "description": "Todo not found",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse500"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete todo to the system",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todo"
+                ],
+                "summary": "Delete todo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Todo ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Todo"
+                        }
+                    },
+                    "400": {
+                        "description": "Todo not found",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse500"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "domain.CreateTodoDTO": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "difficulty": {
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2,
+                        3
+                    ],
+                    "example": 1
+                },
+                "priority": {
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2,
+                        3
+                    ],
+                    "example": 1
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.ErrorResponse400": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "Invalid request body"
+                }
+            }
+        },
+        "domain.ErrorResponse404": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "Todo not found"
+                }
+            }
+        },
+        "domain.ErrorResponse500": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "Internal server error"
+                }
+            }
+        },
+        "domain.Todo": {
+            "type": "object",
+            "properties": {
+                "completed": {
+                    "type": "boolean"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "difficulty": {
+                    "description": "1:easy, 2:medium, 3:hard",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2,
+                        3
+                    ],
+                    "example": 1
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "priority": {
+                    "description": "1:low, 2:medium, 3:high",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2,
+                        3
+                    ],
+                    "example": 1
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "main.HealthCheckResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "OK"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
