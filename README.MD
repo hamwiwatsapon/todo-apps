@@ -4,8 +4,6 @@ This repository contains a full-stack Todo application with a **backend** built 
 
 ## Project Structure
 
-## Project Structure
-
 ````plaintext
 todo-projects/
 ├── backend/         # Backend service
