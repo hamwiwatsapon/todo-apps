@@ -1,10 +1,12 @@
 # Todo Projects
 
-This repository contains a full-stack Todo application with a **backend** built using Go (Fiber framework) and a **frontend** built using Next.js.
+This repository contains a full-stack **Todo application** with a **backend** built using Go (Fiber framework) and a **frontend** built using Next.js.
 
-## Project Structure
+---
 
-````plaintext
+## 📂 Project Structure
+
+```plaintext
 todo-projects/
 ├── backend/         # Backend service
 │   ├── cmd/        # Main entry point for the backend
@@ -29,79 +31,112 @@ todo-projects/
 │       ├── package.json    # Frontend dependencies and scripts
 │       └── tsconfig.json   # TypeScript configuration
 └── README.md         # Project documentation
+```
 
-## Backend
+---
 
-The backend is built using Go and the Fiber framework. It provides a RESTful API for managing todos.
+## 🚀 Backend (Go + Fiber)
 
-### Backend Features
+The backend is built using Go and the **Fiber** framework. It provides a RESTful API for managing todos.
 
-- CRUD operations for todos
-- SQLite database integration using GORM
-- Swagger API documentation
+### 🔹 Features
 
-### Setup
+✅ CRUD operations for todos  
+✅ SQLite database integration using GORM  
+✅ Swagger API documentation
+
+### 🔧 Setup
 
 1. Navigate to the `backend` directory:
-
    ```bash
    cd backend
-   go mod tidy
-   go run cmd/main.go
-````
-
-### Directory Overview
-
-cmd/main.go: Entry point for the backend application.
-internal/domain: Contains domain models and interfaces.
-internal/repository: Implements data access logic using GORM.
-internal/usecase: Contains business logic.
-internal/delivery/http: HTTP handlers for the API.
-package/database: Database connection and migrations.
-
-## Frontend
-
-The frontend is a Next.js application that provides a user interface for managing todos.
-
-### Frontend Features
-
-Add, update, delete, and view todos
-Responsive design
-Integration with the backend API
-
-### Setup
-
-1. Navigate to the frontend/todo-apps directory:
-   cd frontend/todo-apps
-
+   ```
 2. Install dependencies:
+   ```bash
+   go mod tidy
+   ```
+3. Run the application:
+   ```bash
+   go run cmd/main.go
+   ```
+
+### 📁 Directory Overview
+
+- `cmd/main.go` - Entry point for the backend application.
+- `internal/domain` - Contains domain models and interfaces.
+- `internal/repository` - Implements data access logic using GORM.
+- `internal/usecase` - Contains business logic.
+- `internal/delivery/http` - HTTP handlers for the API.
+- `package/database` - Database connection and migrations.
+
+---
+
+## 🎨 Frontend (Next.js + TypeScript)
+
+The frontend is a **Next.js** application that provides a user interface for managing todos.
+
+### 🔹 Features
+
+✅ Add, update, delete, and view todos  
+✅ Responsive design  
+✅ Integration with the backend API
+
+### 🔧 Setup
+
+1. Navigate to the `frontend/todo-apps` directory:
+   ```bash
+   cd frontend/todo-apps
+   ```
+2. Install dependencies:
+   ```bash
    npm install
-
+   ```
 3. Run the development server:
+   ```bash
    npm run dev
+   ```
+4. Open the application in your browser at:  
+   [http://localhost:3000](http://localhost:3000)
 
-4. Open the application in your browser at [http://localhost:3000](http://localhost:3000).
+### 📁 Directory Overview
 
-### Frontend Directory Overview
+- `src/app` - Application entry point and layout.
+- `src/components` - Reusable UI components.
+- `src/feature/todos` - Todo-specific components and API logic.
+- `src/lib` - Utility functions.
 
-src/app: Application entry point and layout.
-src/components: Reusable UI components.
-src/feature/todos: Todo-specific components and API logic.
-src/lib: Utility functions.
+---
 
-## Environment Variables
+## 🌍 Environment Variables
 
-### Backend ENV
+### 🔹 Backend ENV
 
-Create a .env file in the backend directory with the following variables:
+Create a `.env` file in the `backend` directory with the following variables:
+
+```env
 DATABASE_URL=sqlite://todo.db
+```
 
-### Frontend ENV
+### 🔹 Frontend ENV
 
-Copy .env.example to .env in the frontend/todo-apps directory and update the BACKEND_URL:
+Copy `.env.example` to `.env` in the `frontend/todo-apps` directory and update the `BACKEND_URL`:
+
+```env
 BACKEND_URL=http://localhost:4444
+```
 
-### License
+---
 
-This project is licensed under the Apache 2.0 License.
-You can replace or modify the content as needed to better suit your project.
+## 🤝 Contributing
+
+1. Fork the repository.
+2. Create a new branch: `git checkout -b feature-branch`
+3. Make your changes and commit: `git commit -m "Description of changes"`
+4. Push to the branch: `git push origin feature-branch`
+5. Open a **Pull Request**.
+
+---
+
+## 📜 License
+
+This project is licensed under the **Apache 2.0 License**.
