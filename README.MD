@@ -4,30 +4,33 @@ This repository contains a full-stack Todo application with a **backend** built 
 
 ## Project Structure
 
+## Project Structure
+
+````plaintext
 todo-projects/
-├── backend/ # Backend service
-│ ├── cmd/ # Main entry point for the backend
-│ │ └── main.go # Main application file
-│ ├── docs/ # Swagger API documentation
-│ ├── internal/ # Internal application logic
-│ │ ├── delivery/ # HTTP handlers
-│ │ ├── domain/ # Domain models and interfaces
-│ │ ├── repository/ # Data access layer
-│ │ └── usecase/ # Business logic layer
-│ └── package/ # Shared packages
-│ └── database/ # Database connection and migrations
-├── frontend/ # Frontend service
-│ └── todo-apps/ # Next.js application
-│ ├── public/ # Static assets
-│ ├── src/ # Source code
-│ │ ├── app/ # Application entry point
-│ │ ├── components/ # Reusable UI components
-│ │ ├── feature/ # Feature-specific components and logic
-│ │ └── lib/ # Utility functions
-│ ├── .env.example # Example environment variables
-│ ├── package.json # Frontend dependencies and scripts
-│ └── tsconfig.json # TypeScript configuration
-└── README.md # Project documentation
+├── backend/         # Backend service
+│   ├── cmd/        # Main entry point for the backend
+│   │   └── main.go # Main application file
+│   ├── docs/       # Swagger API documentation
+│   ├── internal/   # Internal application logic
+│   │   ├── delivery/   # HTTP handlers
+│   │   ├── domain/     # Domain models and interfaces
+│   │   ├── repository/ # Data access layer
+│   │   └── usecase/    # Business logic layer
+│   ├── package/    # Shared packages
+│   └── database/   # Database connection and migrations
+├── frontend/        # Frontend service
+│   └── todo-apps/   # Next.js application
+│       ├── public/      # Static assets
+│       ├── src/         # Source code
+│       │   ├── app/        # Application entry point
+│       │   ├── components/ # Reusable UI components
+│       │   ├── feature/    # Feature-specific components and logic
+│       │   └── lib/        # Utility functions
+│       ├── .env.example    # Example environment variables
+│       ├── package.json    # Frontend dependencies and scripts
+│       └── tsconfig.json   # TypeScript configuration
+└── README.md         # Project documentation
 
 ## Backend
 
@@ -47,7 +50,7 @@ The backend is built using Go and the Fiber framework. It provides a RESTful API
    cd backend
    go mod tidy
    go run cmd/main.go
-   ```
+````
 
 ### Directory Overview
 
