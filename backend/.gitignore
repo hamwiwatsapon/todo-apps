@@ -1,0 +1,8 @@
+# env files (can opt-in for committing if needed)
+.env*
+!.env.example
+
+#db files
+*.sqlite3
+*.sqlite3-shm
+*.db

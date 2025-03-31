@@ -2,9 +2,6 @@ package repository
 
 import (
 	"github.com/hamwiwatsapon/todo-projects/backend/internal/domain"
-
-	"time"
-
 	"gorm.io/gorm"
 )
 
@@ -23,8 +20,6 @@ func (r *todoRepository) Create(dto *domain.CreateTodoDTO) (*domain.Todo, error)
 		Priority:    dto.Priority,
 		Difficulty:  dto.Difficulty,
 		Completed:   false,
-		CreatedAt:   time.Now(),
-		UpdatedAt:   time.Now(),
 	}
 
 	if err := r.db.Create(todo).Error; err != nil {

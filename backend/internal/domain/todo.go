@@ -11,9 +11,8 @@ type Todo struct {
 	Priority    uint      `json:"priority" gorm:"default:1;check:priority >= 1 AND priority <= 3" example:"1" enums:"1,2,3" description:"Priority level: 1 (low), 2 (medium), 3 (high)"`          // 1:low, 2:medium, 3:high
 	Difficulty  uint      `json:"difficulty" gorm:"default:1;check:difficulty >= 1 AND difficulty <= 3" example:"1" enums:"1,2,3" description:"Difficulty level: 1 (easy), 2 (medium), 3 (hard)"` // 1:easy, 2:medium, 3:hard
 	Completed   bool      `json:"completed" gorm:"default:false"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
-	
+	CreatedAt   time.Time `json:"created_at" gorm:"autoCreateTime"`
+	UpdatedAt   time.Time `json:"updated_at" gorm:"autoUpdateTime"`
 }
 
 type CreateTodoDTO struct {
