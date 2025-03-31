@@ -77,7 +77,7 @@ definitions:
         example: OK
         type: string
     type: object
-host: localhost:3000
+host: localhost:4444
 info:
   contact:
     email: hamlert33@gmail.com

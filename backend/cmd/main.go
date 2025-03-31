@@ -31,7 +31,7 @@ import (
 // @in header
 // @name Authorization
 
-// @host localhost:3000
+// @host localhost:4444
 // @BasePath /
 func main() {
 	// Initialize database
@@ -70,7 +70,7 @@ func main() {
 	http.NewTodoHandler(app, todoUsecase)
 
 	// Start server
-	log.Fatal(app.Listen(":3000"))
+	log.Fatal(app.Listen(":4444"))
 }
 
 // HealthCheckResponse represents the response structure
