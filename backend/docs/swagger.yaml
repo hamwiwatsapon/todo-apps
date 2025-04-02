@@ -11,6 +11,9 @@ definitions:
         - 3
         example: 1
         type: integer
+      end_date:
+        example: "2024-03-20T10:00:00Z"
+        type: string
       priority:
         enum:
         - 1
@@ -20,11 +23,39 @@ definitions:
         type: integer
       title:
         type: string
+      user_id:
+        example: 123e4567-e89b-12d3-a456-426614174000
+        type: string
+    type: object
+  domain.CreateUserDTO:
+    properties:
+      email:
+        example: test@email.user.com
+        type: string
+      password:
+        example: passwordconfig
+        type: string
+      role:
+        description: user, admin
+        example: user
+        type: string
     type: object
   domain.ErrorResponse400:
     properties:
       error:
         example: Invalid request body
+        type: string
+    type: object
+  domain.ErrorResponse401:
+    properties:
+      error:
+        example: Unauthorized
+        type: string
+    type: object
+  domain.ErrorResponse403:
+    properties:
+      error:
+        example: Forbidden
         type: string
     type: object
   domain.ErrorResponse404:
@@ -37,6 +68,45 @@ definitions:
     properties:
       error:
         example: Internal server error
+        type: string
+    type: object
+  domain.LoginDTO:
+    properties:
+      email:
+        example: test@email.user.com
+        type: string
+      password:
+        example: passwordconfig
+        type: string
+    type: object
+  domain.LoginReturn:
+    properties:
+      message:
+        example: Login successful
+        type: string
+      refresh_token:
+        example: your_refresh_token_here
+        type: string
+      token:
+        example: your_token_here
+        type: string
+    type: object
+  domain.RefreshTokenDTO:
+    properties:
+      refresh_token:
+        example: your_token_here
+        type: string
+    type: object
+  domain.RefreshTokenReturn:
+    properties:
+      message:
+        example: Token refreshed successfully
+        type: string
+      refresh_token:
+        example: your_new_refresh_token_here
+        type: string
+      token:
+        example: your_new_token_here
         type: string
     type: object
   domain.Todo:
@@ -55,6 +125,8 @@ definitions:
         - 3
         example: 1
         type: integer
+      end_date:
+        type: string
       id:
         example: 1
         type: integer
@@ -67,6 +139,24 @@ definitions:
         example: 1
         type: integer
       title:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  domain.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      password:
+        type: string
+      role:
+        description: user, admin
         type: string
       updated_at:
         type: string
@@ -89,22 +179,36 @@ info:
   title: User API by Fiber and Swagger
   version: "1.0"
 paths:
-  /healthcheck:
-    get:
+  /auth/delete/{email}:
+    delete:
       consumes:
-      - '*/*'
-      description: Get the status of server.
+      - application/json
+      description: Use for delete user by email.
+      parameters:
+      - description: User email
+        in: path
+        name: email
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/main.HealthCheckResponse'
-      summary: Show the status of server.
+            $ref: '#/definitions/domain.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse400'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse500'
+      summary: Delete user.
       tags:
-      - root
-  /todos:
+      - users
+  /auth/todos:
     get:
       consumes:
       - application/json
@@ -122,6 +226,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/domain.ErrorResponse500'
+      security:
+      - BearerAuth: []
       summary: Get all todos
       tags:
       - todo
@@ -154,7 +260,7 @@ paths:
       summary: Create to do.
       tags:
       - todo
-  /todos/{id}:
+  /auth/todos/{id}:
     delete:
       consumes:
       - application/json
@@ -180,6 +286,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/domain.ErrorResponse500'
+      security:
+      - BearerAuth: []
       summary: Delete todo
       tags:
       - todo
@@ -212,6 +320,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/domain.ErrorResponse500'
+      security:
+      - BearerAuth: []
       summary: Get todo by id
       tags:
       - todo
@@ -240,9 +350,124 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/domain.ErrorResponse500'
+      security:
+      - BearerAuth: []
       summary: Update todo
       tags:
       - todo
+  /healthcheck:
+    get:
+      consumes:
+      - '*/*'
+      description: Get the status of server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.HealthCheckResponse'
+      summary: Show the status of server.
+      tags:
+      - root
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Use for Login.
+      parameters:
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.LoginDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.LoginReturn'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse400'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse500'
+      summary: Login user.
+      tags:
+      - users
+  /refreshToken:
+    post:
+      consumes:
+      - application/json
+      description: Use for Get New Token.
+      parameters:
+      - description: token
+        in: body
+        name: refreshToken
+        required: true
+        schema:
+          $ref: '#/definitions/domain.RefreshTokenDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.RefreshTokenReturn'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse400'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse401'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse403'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse500'
+      summary: Refresh Token.
+      tags:
+      - users
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Use for create user.
+      parameters:
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CreateUserDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse400'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse500'
+      summary: Register user.
+      tags:
+      - users
 schemes:
 - http
 - https

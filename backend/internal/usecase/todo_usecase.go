@@ -22,8 +22,8 @@ func (u *todoUsecase) GetByID(id uint) (*domain.Todo, error) {
 	return u.todoRepo.GetByID(id)
 }
 
-func (u *todoUsecase) GetAll() ([]domain.Todo, error) {
-	return u.todoRepo.GetAll()
+func (u *todoUsecase) GetAllByUserID(userID string) ([]domain.Todo, error) {
+	return u.todoRepo.GetAllByUserID(userID)
 }
 
 func (u *todoUsecase) Update(todo *domain.Todo) error {

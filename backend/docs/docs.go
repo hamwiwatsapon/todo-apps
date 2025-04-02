@@ -22,31 +22,57 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/healthcheck": {
-            "get": {
-                "description": "Get the status of server.",
+        "/auth/delete/{email}": {
+            "delete": {
+                "description": "Use for delete user by email.",
                 "consumes": [
-                    "*/*"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "root"
+                    "users"
                 ],
-                "summary": "Show the status of server.",
+                "summary": "Delete user.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User email",
+                        "name": "email",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/main.HealthCheckResponse"
+                            "$ref": "#/definitions/domain.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse400"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse500"
                         }
                     }
                 }
             }
         },
-        "/todos": {
+        "/auth/todos": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve all todos from the system",
                 "consumes": [
                     "application/json"
@@ -121,8 +147,13 @@ const docTemplate = `{
                 }
             }
         },
-        "/todos/{id}": {
+        "/auth/todos/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve todo by id from the system",
                 "consumes": [
                     "application/json"
@@ -171,6 +202,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update todo to the system",
                 "consumes": [
                     "application/json"
@@ -213,6 +249,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete todo to the system",
                 "consumes": [
                     "application/json"
@@ -254,6 +295,179 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/healthcheck": {
+            "get": {
+                "description": "Get the status of server.",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "root"
+                ],
+                "summary": "Show the status of server.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.HealthCheckResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "description": "Use for Login.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Login user.",
+                "parameters": [
+                    {
+                        "description": "User object",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.LoginDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.LoginReturn"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse400"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse500"
+                        }
+                    }
+                }
+            }
+        },
+        "/refreshToken": {
+            "post": {
+                "description": "Use for Get New Token.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Refresh Token.",
+                "parameters": [
+                    {
+                        "description": "token",
+                        "name": "refreshToken",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.RefreshTokenDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.RefreshTokenReturn"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse400"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse403"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse500"
+                        }
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "description": "Use for create user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Register user.",
+                "parameters": [
+                    {
+                        "description": "User object",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.CreateUserDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/domain.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse400"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse500"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -272,6 +486,10 @@ const docTemplate = `{
                     ],
                     "example": 1
                 },
+                "end_date": {
+                    "type": "string",
+                    "example": "2024-03-20T10:00:00Z"
+                },
                 "priority": {
                     "type": "integer",
                     "enum": [
@@ -283,6 +501,28 @@ const docTemplate = `{
                 },
                 "title": {
                     "type": "string"
+                },
+                "user_id": {
+                    "type": "string",
+                    "example": "123e4567-e89b-12d3-a456-426614174000"
+                }
+            }
+        },
+        "domain.CreateUserDTO": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "test@email.user.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "passwordconfig"
+                },
+                "role": {
+                    "description": "user, admin",
+                    "type": "string",
+                    "example": "user"
                 }
             }
         },
@@ -292,6 +532,24 @@ const docTemplate = `{
                 "error": {
                     "type": "string",
                     "example": "Invalid request body"
+                }
+            }
+        },
+        "domain.ErrorResponse401": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "Unauthorized"
+                }
+            }
+        },
+        "domain.ErrorResponse403": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "Forbidden"
                 }
             }
         },
@@ -310,6 +568,62 @@ const docTemplate = `{
                 "error": {
                     "type": "string",
                     "example": "Internal server error"
+                }
+            }
+        },
+        "domain.LoginDTO": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "test@email.user.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "passwordconfig"
+                }
+            }
+        },
+        "domain.LoginReturn": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Login successful"
+                },
+                "refresh_token": {
+                    "type": "string",
+                    "example": "your_refresh_token_here"
+                },
+                "token": {
+                    "type": "string",
+                    "example": "your_token_here"
+                }
+            }
+        },
+        "domain.RefreshTokenDTO": {
+            "type": "object",
+            "properties": {
+                "refresh_token": {
+                    "type": "string",
+                    "example": "your_token_here"
+                }
+            }
+        },
+        "domain.RefreshTokenReturn": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Token refreshed successfully"
+                },
+                "refresh_token": {
+                    "type": "string",
+                    "example": "your_new_refresh_token_here"
+                },
+                "token": {
+                    "type": "string",
+                    "example": "your_new_token_here"
                 }
             }
         },
@@ -335,6 +649,9 @@ const docTemplate = `{
                     ],
                     "example": 1
                 },
+                "end_date": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer",
                     "example": 1
@@ -350,6 +667,33 @@ const docTemplate = `{
                     "example": 1
                 },
                 "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.User": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "role": {
+                    "description": "user, admin",
                     "type": "string"
                 },
                 "updated_at": {

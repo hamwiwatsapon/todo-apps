@@ -20,6 +20,7 @@ func (r *todoRepository) Create(dto *domain.CreateTodoDTO) (*domain.Todo, error)
 		Priority:    dto.Priority,
 		Difficulty:  dto.Difficulty,
 		Completed:   false,
+		UserID:      dto.UserID,
 	}
 
 	if err := r.db.Create(todo).Error; err != nil {
@@ -36,9 +37,9 @@ func (r *todoRepository) GetByID(id uint) (*domain.Todo, error) {
 	return &todo, nil
 }
 
-func (r *todoRepository) GetAll() ([]domain.Todo, error) {
+func (r *todoRepository) GetAllByUserID(userID string) ([]domain.Todo, error) {
 	var todos []domain.Todo
-	if err := r.db.Find(&todos).Error; err != nil {
+	if err := r.db.Where("user_id = ?", userID).Find(&todos).Error; err != nil {
 		return nil, err
 	}
 	return todos, nil

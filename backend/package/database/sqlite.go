@@ -7,13 +7,17 @@ import (
 )
 
 func NewSQLiteDB() (*gorm.DB, error) {
-	db, err := gorm.Open(sqlite.Open("todo.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}
 
 	// Auto migrate the schema
-	err = db.AutoMigrate(&domain.Todo{})
+	err = db.AutoMigrate(
+		&domain.Todo{},
+		&domain.User{},
+	)
+
 	if err != nil {
 		return nil, err
 	}

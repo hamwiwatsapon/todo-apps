@@ -13,6 +13,7 @@ import (
 	"github.com/hamwiwatsapon/todo-projects/backend/internal/repository"
 	"github.com/hamwiwatsapon/todo-projects/backend/internal/usecase"
 	"github.com/hamwiwatsapon/todo-projects/backend/package/database"
+	"github.com/hamwiwatsapon/todo-projects/backend/package/helper"
 )
 
 // @title User API by Fiber and Swagger
@@ -34,6 +35,9 @@ import (
 // @host localhost:4444
 // @BasePath /
 func main() {
+	// Load environment variables (if using .env file)
+	helper.LoadEnv()
+
 	// Initialize database
 	db, err := database.NewSQLiteDB()
 	if err != nil {
@@ -42,9 +46,11 @@ func main() {
 
 	// Initialize repository
 	todoRepo := repository.NewTodoRepository(db)
+	authRepo := repository.NewAuthRepository(db)
 
 	// Initialize usecase
 	todoUsecase := usecase.NewTodoUsecase(todoRepo)
+	authUsecase := usecase.NewAuthUsecase(authRepo)
 
 	// Initialize Fiber app
 	app := fiber.New()
@@ -68,6 +74,7 @@ func main() {
 
 	// Initialize handlers
 	http.NewTodoHandler(app, todoUsecase)
+	http.NewAuthHandler(app, authUsecase)
 
 	// Start server
 	log.Fatal(app.Listen(":4444"))
